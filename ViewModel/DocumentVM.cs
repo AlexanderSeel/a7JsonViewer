@@ -38,6 +38,20 @@ namespace a7JsonViewer.ViewModel
             IsBusy = false;
         });
 
+        public ICommand OpenFileCommand => new LambdaCommand((o) =>
+        {
+            IsBusy = true;
+            try
+            {
+                throw new NotImplementedException();
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show($"Not possible to open file:{Environment.NewLine}{e.ToString()}");
+            }
+            IsBusy = false;
+        });
+
         public ICommand CopyValueFromJPropertyCommand => new LambdaCommand((o) =>
         {
             if (o.IsNotEmpty() && o is JProperty)
@@ -67,6 +81,13 @@ namespace a7JsonViewer.ViewModel
             }
         });
 
+        public ICommand FromClipboardCommand => new LambdaCommand((o) =>
+        {
+            var content = System.Windows.Clipboard.GetText(TextDataFormat.Text);
+            if(!string.IsNullOrWhiteSpace(content))
+                setJson(content);
+        });
+
         private bool _isEditMode;
         public bool IsEditMode
         {
@@ -87,6 +108,11 @@ namespace a7JsonViewer.ViewModel
         {
             _isBusy = false;
             _isEditMode = true;
+            setJson(json);
+        }
+
+        private void setJson(string json)
+        {
             try
             {
                 JToken = JToken.Parse(json);

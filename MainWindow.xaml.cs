@@ -27,6 +27,34 @@ namespace a7JsonViewer
         FoldingManager foldingManager;
         BraceFoldingStrategy foldingStrategy;
 
+        private bool _isTextMode;
+
+        public bool IsTextMode
+        {
+            get { return _isTextMode; }
+            set
+            {
+                string imgName;
+                _isTextMode = value;
+                if (_isTextMode)
+                {
+                    imgName = "tree.png";
+                    tbMode.Text = "Switch to tree mode";
+                    textModeControl.Visibility = Visibility.Visible;
+                    treeModeControl.Visibility = Visibility.Collapsed;
+                }
+                else
+                {
+                    imgName = "text.png";
+                    tbMode.Text = "Switch to text mode";
+                    textModeControl.Visibility = Visibility.Collapsed;
+                    treeModeControl.Visibility = Visibility.Visible;
+                }
+                var uriSource = new Uri($@"/a7JsonViewer;component/Images/{imgName}", UriKind.Relative);
+                imgMode.Source = new BitmapImage(uriSource);
+            }
+        }
+
         public MainWindow()
         {
             this.Loaded += OnLoaded;
@@ -35,8 +63,8 @@ namespace a7JsonViewer
             InitializeComponent();
             this.DataContext = new DocumentVM(
                 @"{ 'message' : 'try to drop a json file!'}");
-            //MessageBox.Show(Environment.GetCommandLineArgs().Length.ToString());
-            //MessageBox.Show(string.Join(",", Environment.GetCommandLineArgs()));
+            this.IsTextMode = false;
+            this.bMode.Click += (sender, args) => IsTextMode = !IsTextMode;
         }
 
         private void OnDrop(object sender, DragEventArgs dragEventArgs)
@@ -54,15 +82,15 @@ namespace a7JsonViewer
 
         private void OnLoaded(object sender, RoutedEventArgs routedEventArgs)
         {
-            this.jsonEditor.TextChanged += Te_TextChanged;
-            foldingManager = FoldingManager.Install(this.jsonEditor.TextArea);
+            this.textModeControl.TextChanged += Te_TextChanged;
+            foldingManager = FoldingManager.Install(this.textModeControl.TextArea);
             foldingStrategy = new BraceFoldingStrategy();
-            foldingStrategy.UpdateFoldings(foldingManager, jsonEditor.Document);
+            foldingStrategy.UpdateFoldings(foldingManager, textModeControl.Document);
         }
 
         private void Te_TextChanged(object sender, EventArgs e)
         {
-            foldingStrategy.UpdateFoldings(foldingManager, jsonEditor.Document);
+            foldingStrategy.UpdateFoldings(foldingManager, textModeControl.Document);
         }
     }
 }

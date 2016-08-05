@@ -13,7 +13,7 @@
         AllowDrop="True"
         Icon="logo.ico"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525">
+        Title="a7JsonViewer" Height="350" Width="525">
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -27,36 +27,58 @@
         </ResourceDictionary>
     </Window.Resources>
     <Grid>
-        <TabControl>
-            <TabItem Header="Tree" IsSelected="True">
-                <controls:JsonTree JToken="{Binding JToken}" Document="{Binding}"></controls:JsonTree>
-            </TabItem>
-            <TabItem Header="Text/Edit">
-                <DockPanel>
-                    <DockPanel DockPanel.Dock="Top" Height="18">
-                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
-                            <Button Height="18" Width="50" Margin="0" Command="{Binding SaveCommand}" HorizontalAlignment="Right">
-                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                                    <Image Source="Images/save.png" Width="16" Height="16" Margin="0,0,4,0"
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <WrapPanel Orientation="Horizontal" Grid.Row="0">
+            <Button Command="{Binding OpenFileCommand}">
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                    <Image Source="Images/open.png" Width="16" Height="16" Margin="0,0,4,0"
                                            RenderOptions.BitmapScalingMode="NearestNeighbor"
                                             RenderOptions.EdgeMode="Aliased"
                                            ></Image>
-                                    <TextBlock>Save</TextBlock>
-                                </StackPanel>
-                            </Button>
-                        </StackPanel>
-                    </DockPanel>
-                    <avalonedit:TextEditor x:Name="jsonEditor" Grid.Row="0" Grid.Column="2" IsReadOnly="False" VerticalScrollBarVisibility="Auto"
+                    <TextBlock>Open file</TextBlock>
+                </StackPanel>
+            </Button>
+            <Button Command="{Binding FromClipboardCommand}">
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                    <Image Source="Images/clipboard.png" Width="16" Height="16" Margin="0,0,4,0"
+                                           RenderOptions.BitmapScalingMode="NearestNeighbor"
+                                            RenderOptions.EdgeMode="Aliased"
+                                           ></Image>
+                    <TextBlock>From clipboard</TextBlock>
+                </StackPanel>
+            </Button>
+            <Button Command="{Binding SaveCommand}" HorizontalAlignment="Right">
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                    <Image Source="Images/save.png" Width="16" Height="16" Margin="0,0,4,0"
+                                           RenderOptions.BitmapScalingMode="NearestNeighbor"
+                                            RenderOptions.EdgeMode="Aliased"
+                                           ></Image>
+                    <TextBlock>Save</TextBlock>
+                </StackPanel>
+            </Button>
+            <Button x:Name="bMode">
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                    <Image x:Name="imgMode" Width="16" Height="16" Margin="0,0,4,0"
+                                           RenderOptions.BitmapScalingMode="NearestNeighbor"
+                                            RenderOptions.EdgeMode="Aliased"
+                                           ></Image>
+                    <TextBlock x:Name="tbMode"></TextBlock>
+                </StackPanel>
+            </Button>
+        </WrapPanel>
+        <controls:JsonTree Grid.Row="1" x:Name="treeModeControl" 
+                           JToken="{Binding JToken}" Document="{Binding}"></controls:JsonTree>
+        <avalonedit:TextEditor Grid.Row="1" x:Name="textModeControl" IsReadOnly="False" VerticalScrollBarVisibility="Auto"
                                   SyntaxHighlighting="{Binding IsEditMode, Converter={StaticResource bsh}}" HorizontalScrollBarVisibility="Auto"
                                   VerticalAlignment="Stretch"
                                   IsEnabled="{Binding IsBusy, Converter={StaticResource nb}}"
                                   >
-                        <i:Interaction.Behaviors>
-                            <utils:AvalonEditBehaviour GiveMeTheText="{Binding Stringified, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                        </i:Interaction.Behaviors>
-                    </avalonedit:TextEditor>
-                </DockPanel>
-            </TabItem>
-        </TabControl>
+            <i:Interaction.Behaviors>
+                <utils:AvalonEditBehaviour GiveMeTheText="{Binding Stringified, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+            </i:Interaction.Behaviors>
+        </avalonedit:TextEditor>
     </Grid>
 </Window>
