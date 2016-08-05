@@ -13,5 +13,15 @@ namespace a7JsonViewer
     /// </summary>
     public partial class App : Application
     {
+        public static string ArgFilePath { get; private set; }
+
+        //Add this method override
+        protected override void OnStartup(StartupEventArgs e)
+        {
+            if (e.Args?.Length > 0)
+            {
+                ArgFilePath = e.Args[0];
+            }
+        }
     }
 }

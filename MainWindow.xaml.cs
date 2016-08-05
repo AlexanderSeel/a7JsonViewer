@@ -88,8 +88,10 @@ namespace a7JsonViewer
             this.DragEnter += (sender, args) => args.Effects = DragDropEffects.Move;
             this.Drop += OnDrop;
             InitializeComponent();
-            this._document = new DocumentVM(
-                @"{ 
+            if (string.IsNullOrWhiteSpace(App.ArgFilePath) || !File.Exists(App.ArgFilePath))
+            {
+                this._document = new DocumentVM(
+                    @"{ 
                     'title' : 'a7JsonViewer',
                     'description' : 'Lightweight json viewer for windows.',
                     'github' : 'https://github.com/alekkowalczyk/a7JsonViewer',
@@ -101,6 +103,12 @@ namespace a7JsonViewer
                         { 'tip' : 'for free editing check the text mode'    }
                     ]
                   }");
+            }
+            else
+            {
+                this._document = new DocumentVM("{}");
+                this._document.OpenFileContent(App.ArgFilePath);
+            }
             this.DataContext = _document;
             this.IsTextMode = false;
             this.bMode.Click += (sender, args) => IsTextMode = !IsTextMode;

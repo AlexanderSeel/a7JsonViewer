@@ -13,7 +13,7 @@
         AllowDrop="True"
         Icon="logo.ico"
         mc:Ignorable="d"
-        Title="a7JsonViewer" Height="350" Width="525">
+        Title="a7JsonViewer" Height="500" Width="675">
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
