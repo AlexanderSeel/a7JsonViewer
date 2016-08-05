@@ -1,9 +1,11 @@
 ﻿using System;
+using System.IO;
 using System.Windows;
 using System.Windows.Input;
 using a7ExtensionMethods;
 using a7JsonViewer.Dialogs;
 using a7JsonViewer.Utils;
+using Microsoft.Win32;
 using Newtonsoft.Json.Linq;
 
 namespace a7JsonViewer.ViewModel
@@ -29,7 +31,14 @@ namespace a7JsonViewer.ViewModel
             IsBusy = true;
             try
             {
-                throw new NotImplementedException();
+                var dlg = new SaveFileDialog();
+                if (!string.IsNullOrWhiteSpace(_sourceFilePath))
+                    dlg.FileName = _sourceFilePath;
+                var result = dlg.ShowDialog();
+                if (result == true)
+                {
+                    File.WriteAllText(dlg.FileName, this.Stringified);
+                }
             }
             catch (Exception e)
             {
@@ -43,7 +52,12 @@ namespace a7JsonViewer.ViewModel
             IsBusy = true;
             try
             {
-                throw new NotImplementedException();
+                var dlg = new OpenFileDialog();
+                var result = dlg.ShowDialog();
+                if (result == true)
+                {
+                    OpenFileContent(dlg.FileName);
+                }
             }
             catch (Exception e)
             {
@@ -76,7 +90,20 @@ namespace a7JsonViewer.ViewModel
                 var dlg = new ChangeValue(jp.Value.ToObject<object>());
                 if (dlg.ShowDialog() == true)
                 {
-                    throw new NotImplementedException();
+                    var js = this.JToken;
+                    var token = js.SelectToken(jp.Path);
+                    if (token != null)
+                    {
+                        token.Replace(JToken.FromObject(dlg.Value));
+                    }
+                    else
+                    {
+                        throw new Exception($"'{jp.Path}' not found...");
+                    }
+
+       //             jp.Value = new JValue(dlg.Value);
+                    Stringified = JToken.ToString();
+                    JToken = JToken.Parse(Stringified);
                 }
             }
         });
@@ -102,6 +129,7 @@ namespace a7JsonViewer.ViewModel
             set { _isBusy = value; OnPropertyChanged(); }
         }
 
+        private string _sourceFilePath;
 
 
         public DocumentVM(string json)
@@ -111,8 +139,20 @@ namespace a7JsonViewer.ViewModel
             setJson(json);
         }
 
-        private void setJson(string json)
+        public void OpenFileContent(string filePath)
         {
+            if(!string.IsNullOrWhiteSpace(filePath) && File.Exists(filePath))
+            {
+                _sourceFilePath = filePath;
+                var content = File.ReadAllText(filePath);
+                setJson(content, false);
+            }
+        }
+
+        private void setJson(string json, bool clearSourceFilePath = true)
+        {
+            if (clearSourceFilePath)
+                _sourceFilePath = null;
             try
             {
                 JToken = JToken.Parse(json);

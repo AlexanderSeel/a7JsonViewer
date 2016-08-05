@@ -80,14 +80,28 @@ namespace a7JsonViewer
             }
         }
 
+        private DocumentVM _document;
+
         public MainWindow()
         {
             this.Loaded += OnLoaded;
             this.DragEnter += (sender, args) => args.Effects = DragDropEffects.Move;
             this.Drop += OnDrop;
             InitializeComponent();
-            this.DataContext = new DocumentVM(
-                @"{ 'message' : 'try to drop a json file!'}");
+            this._document = new DocumentVM(
+                @"{ 
+                    'title' : 'a7JsonViewer',
+                    'description' : 'Lightweight json viewer for windows.',
+                    'github' : 'https://github.com/alekkowalczyk/a7JsonViewer',
+                    'homepage' : 'http://jsonviewer.a7pl.us',
+                    'author' : 'http://a7pl.us',
+                    'tips' : [
+                        { 'tip' : 'try to drop a json file' },
+                        { 'tip' : 'tree nodes have a context menu'    },
+                        { 'tip' : 'for free editing check the text mode'    }
+                    ]
+                  }");
+            this.DataContext = _document;
             this.IsTextMode = false;
             this.bMode.Click += (sender, args) => IsTextMode = !IsTextMode;
             // Setter in JsonTree sets it to true, so we init here it to true as well (ugly code)
@@ -99,10 +113,9 @@ namespace a7JsonViewer
             if (dragEventArgs.Data.GetDataPresent(DataFormats.FileDrop))
             {
                 string[] files = (string[])dragEventArgs.Data.GetData(DataFormats.FileDrop);
-                if (files.Any() && File.Exists(files[0]))
+                if (files.Any())
                 {
-                    var content = File.ReadAllText(files[0]);
-                    this.DataContext = new DocumentVM(content);
+                    _document.OpenFileContent(files[0]);
                 }
             }
         }

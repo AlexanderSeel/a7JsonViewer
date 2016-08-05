@@ -20,7 +20,7 @@ namespace a7JsonViewer.ViewModel
             OnPropertyChangedExplicit(memberExpression.Member.Name);
         }
 
-        private void OnPropertyChangedExplicit(string propertyName)
+        protected void OnPropertyChangedExplicit(string propertyName)
         {
             if (PropertyChanged != null)
                 PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
