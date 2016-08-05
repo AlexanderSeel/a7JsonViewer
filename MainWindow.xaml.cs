@@ -24,9 +24,7 @@ namespace a7JsonViewer
     /// </summary>
     public partial class MainWindow : Window
     {
-        FoldingManager foldingManager;
-        BraceFoldingStrategy foldingStrategy;
-
+#region text mode switching
         private bool _isTextMode;
 
         public bool IsTextMode
@@ -42,6 +40,7 @@ namespace a7JsonViewer
                     tbMode.Text = "Switch to tree mode";
                     textModeControl.Visibility = Visibility.Visible;
                     treeModeControl.Visibility = Visibility.Collapsed;
+                    bExpandCollapseTree.Visibility = Visibility.Collapsed;
                 }
                 else
                 {
@@ -49,9 +48,35 @@ namespace a7JsonViewer
                     tbMode.Text = "Switch to text mode";
                     textModeControl.Visibility = Visibility.Collapsed;
                     treeModeControl.Visibility = Visibility.Visible;
+                    bExpandCollapseTree.Visibility = Visibility.Visible;
                 }
                 var uriSource = new Uri($@"/a7JsonViewer;component/Images/{imgName}", UriKind.Relative);
                 imgMode.Source = new BitmapImage(uriSource);
+            }
+        }
+#endregion
+
+        private bool _isExpanded;
+
+        public bool IsExpanded
+        {
+            get { return _isExpanded; }
+            set
+            {
+                _isExpanded = value;
+                string imgName;
+                if (_isExpanded)
+                {
+                    this.tbExpand.Text = "Collapse all";
+                    imgName = "collapse.png";
+                }
+                else
+                {
+                    tbExpand.Text = "Expand all";
+                    imgName = "expand.png";
+                }
+                var uriSource = new Uri($@"/a7JsonViewer;component/Images/{imgName}", UriKind.Relative);
+                imgExpand.Source = new BitmapImage(uriSource);
             }
         }
 
@@ -65,6 +90,8 @@ namespace a7JsonViewer
                 @"{ 'message' : 'try to drop a json file!'}");
             this.IsTextMode = false;
             this.bMode.Click += (sender, args) => IsTextMode = !IsTextMode;
+            // Setter in JsonTree sets it to true, so we init here it to true as well (ugly code)
+            IsExpanded = true;
         }
 
         private void OnDrop(object sender, DragEventArgs dragEventArgs)
@@ -80,6 +107,10 @@ namespace a7JsonViewer
             }
         }
 
+#region avalon text editor handling
+        FoldingManager foldingManager;
+        BraceFoldingStrategy foldingStrategy;
+
         private void OnLoaded(object sender, RoutedEventArgs routedEventArgs)
         {
             this.textModeControl.TextChanged += Te_TextChanged;
@@ -91,6 +122,13 @@ namespace a7JsonViewer
         private void Te_TextChanged(object sender, EventArgs e)
         {
             foldingStrategy.UpdateFoldings(foldingManager, textModeControl.Document);
+        }
+        #endregion
+
+        private void BExpandCollapseTree_OnClick(object sender, RoutedEventArgs e)
+        {
+            this.treeModeControl.ExpandCollapseAll();
+            IsExpanded = !IsExpanded;
         }
     }
 }

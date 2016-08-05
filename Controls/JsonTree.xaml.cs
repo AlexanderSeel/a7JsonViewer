@@ -40,6 +40,34 @@ namespace a7JsonViewer.Controls
             InitializeComponent();
         }
 
+        private void ExpandAll(ItemsControl items)
+        {
+            foreach (object obj in items.Items)
+            {
+                ItemsControl childControl = items.ItemContainerGenerator.ContainerFromItem(obj) as ItemsControl;
+                if (childControl != null)
+                {
+                    ExpandAll(childControl);
+                }
+                TreeViewItem item = childControl as TreeViewItem;
+                if (item != null)
+                    item.IsExpanded = !item.IsExpanded;
+            }
+        }
+
+
+        public void ExpandCollapseAll()
+        {
+            foreach (object item in this.treeView1.Items)
+            {
+                TreeViewItem treeItem = this.treeView1.ItemContainerGenerator.ContainerFromItem(item) as TreeViewItem;
+                if (treeItem != null)
+                    ExpandAll(treeItem);
+                // besides root level!
+                // treeItem.IsExpanded = !treeItem.IsExpanded; 
+            }
+        }
+
 
         protected override void OnPropertyChanged(DependencyPropertyChangedEventArgs e)
         {

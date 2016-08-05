@@ -60,7 +60,7 @@
         </DataTemplate>-->
     </UserControl.Resources>
     <Grid>
-        <TreeView Margin="3" Name="treeView1"  VirtualizingStackPanel.IsVirtualizing="True">
+        <TreeView Margin="3" Name="treeView1"  VirtualizingStackPanel.IsVirtualizing="False">
             <TreeView.ItemContainerStyle>
                 <Style TargetType="{x:Type TreeViewItem}">
                     <Setter Property="IsExpanded" Value="True" />

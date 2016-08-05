@@ -68,6 +68,15 @@
                     <TextBlock x:Name="tbMode"></TextBlock>
                 </StackPanel>
             </Button>
+            <Button x:Name="bExpandCollapseTree" Click="BExpandCollapseTree_OnClick">
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                    <Image x:Name="imgExpand" Width="16" Height="16" Margin="0,0,4,0"
+                                               RenderOptions.BitmapScalingMode="NearestNeighbor"
+                                                RenderOptions.EdgeMode="Aliased"
+                                               ></Image>
+                    <TextBlock x:Name="tbExpand"></TextBlock>
+                </StackPanel>
+            </Button>
         </WrapPanel>
         <controls:JsonTree Grid.Row="1" x:Name="treeModeControl" 
                            JToken="{Binding JToken}" Document="{Binding}"></controls:JsonTree>
