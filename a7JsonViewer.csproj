@@ -241,6 +241,16 @@
       <DefaultIcon>logo.ico</DefaultIcon>
     </FileAssociation>
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="a7JsonViewerWebSite\index.html" />
+    <Content Include="a7JsonViewerWebSite\index_files\pygment_trac.css" />
+    <Content Include="a7JsonViewerWebSite\index_files\scale.fix.js" />
+    <Content Include="a7JsonViewerWebSite\index_files\styles.css" />
+    <Resource Include="a7JsonViewerWebSite\logo.png" />
+    <Content Include="a7JsonViewerWebSite\main.css" />
+    <Resource Include="a7JsonViewerWebSite\screen1.png" />
+    <Resource Include="a7JsonViewerWebSite\screen2.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
