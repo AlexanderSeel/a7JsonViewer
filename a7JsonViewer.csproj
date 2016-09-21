@@ -128,7 +128,7 @@
     <Compile Include="Converters\Json\JPropertyToChildren.cs" />
     <Compile Include="Converters\Json\JPropertyValueToString.cs" />
     <Compile Include="Converters\MethodToValueConverter.cs" />
-    <Compile Include="Converters\NegateBool.cs" />
+    <Compile Include="ViewModel\NegateBool.cs" />
     <Compile Include="Dialogs\ChangeValue.xaml.cs">
       <DependentUpon>ChangeValue.xaml</DependentUpon>
     </Compile>
@@ -240,16 +240,6 @@
       <Progid>json</Progid>
       <DefaultIcon>logo.ico</DefaultIcon>
     </FileAssociation>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="a7JsonViewerWebSite\index.html" />
-    <Content Include="a7JsonViewerWebSite\index_files\pygment_trac.css" />
-    <Content Include="a7JsonViewerWebSite\index_files\scale.fix.js" />
-    <Content Include="a7JsonViewerWebSite\index_files\styles.css" />
-    <Resource Include="a7JsonViewerWebSite\logo.png" />
-    <Content Include="a7JsonViewerWebSite\main.css" />
-    <Resource Include="a7JsonViewerWebSite\screen1.png" />
-    <Resource Include="a7JsonViewerWebSite\screen2.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
